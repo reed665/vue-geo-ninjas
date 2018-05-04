@@ -30,6 +30,7 @@
 
 <script>
 import slugify from 'slugify'
+import db from '@/firebase'
 
 export default {
   data () {
@@ -55,7 +56,16 @@ export default {
         this.feedback = 'You must enter an alias'
         return
       }
-      console.log(this.slug)
+      this.feedback = ''
+      db.collection('users').doc(this.slug).get()
+        .then(doc => {
+          if (doc.exists) {
+            this.feedback = 'This alias already exists'
+            return
+          }
+          console.log(this.slug)
+        })
+        .catch(console.error)
     }
   }
 }
