@@ -30,7 +30,7 @@
 
 <script>
 import slugify from 'slugify'
-import db from '@/firebase'
+import db from '@/firestore'
 
 export default {
   data () {
