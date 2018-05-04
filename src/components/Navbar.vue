@@ -2,7 +2,7 @@
   <div class="navbar">
     <nav class="deep-purple darken-1">
       <div class="container">
-        <a href="" class="brand-logo">GeoNinjas!</a>
+        <a href="" class="brand-logo left">GeoNinjas!</a>
 
         <ul class="right">
           <li><a href="">Signup</a></li>
