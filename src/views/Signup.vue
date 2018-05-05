@@ -31,6 +31,7 @@
 <script>
 import slugify from 'slugify'
 import db from '@/firestore'
+import firebase from 'firebase' 
 
 export default {
   data () {
@@ -52,20 +53,25 @@ export default {
   },
   methods: {
     signup () {
-      if (!this.alias) {
-        this.feedback = 'You must enter an alias'
+      if (!this.email || !this.password || !this.alias) {
+        this.feedback = 'All fields are required'
         return
       }
       this.feedback = ''
       db.collection('users').doc(this.slug).get()
         .then(doc => {
           if (doc.exists) {
-            this.feedback = 'This alias already exists'
-            return
+            return Promise.reject(new Error('This alias already exists'))
           }
-          console.log(this.slug)
+          return firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         })
-        .catch(console.error)
+        .then((result) => {
+          console.log(result)
+        })
+        .catch(err => {
+          if (!err) return
+          this.feedback = (typeof err === 'string') ? err : err.message
+        })
     }
   }
 }
