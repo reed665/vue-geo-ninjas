@@ -58,15 +58,24 @@ export default {
         return
       }
       this.feedback = ''
-      db.collection('users').doc(this.slug).get()
+      const userRef = db.collection('users').doc(this.slug)
+      userRef.get()
         .then(doc => {
           if (doc.exists) {
             return Promise.reject(new Error('This alias already exists'))
           }
           return firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         })
-        .then((result) => {
-          console.log(result)
+        .then(authUser => {
+          const user = {
+            alias: this.alias,
+            geolocation: null,
+            userId: authUser.uid,
+          }
+          return userRef.set(user)
+        })
+        .then(() => {
+          this.$router.push({ name: 'gMap' })
         })
         .catch(err => {
           if (!err) return
