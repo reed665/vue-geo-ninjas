@@ -6,15 +6,22 @@
 
 
 <script>
+import firebase from 'firebase'
+
 export default {
   data () {
     return {
       lat: 53,
       lng: -2,
+      user: null,
     }
+  },
+  created () {
+    this.user = firebase.auth().currentUser
   },
   mounted () {
     this.renderMap()
+    console.log('>> current user', this.user)
   },
   methods: {
     renderMap () {
