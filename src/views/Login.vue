@@ -24,6 +24,8 @@
 
 
 <script>
+import firebase from 'firebase'
+
 export default {
   data () {
     return {
@@ -34,7 +36,19 @@ export default {
   },
   methods: {
     login () {
-      console.log(this.email, this.password)
+      if (!this.email || !this.password) {
+        this.feedback = 'Please fill in both fields'
+        return
+      }
+      this.feedback = ''
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(authUser => {
+          this.$router.push({ name: 'gMap' })
+        })
+        .catch(err => {
+          if (!err) return
+          this.feedback = (typeof err === 'string') ? err : err.message
+        })
     }
   }
 }

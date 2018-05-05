@@ -2,7 +2,7 @@
   <div class="navbar">
     <nav class="deep-purple darken-1">
       <div class="container">
-        <a href="" class="brand-logo left">GeoNinjas!</a>
+        <router-link :to="{ name: 'gMap' }">GeoNinjas!</router-link>
 
         <ul class="right">
           <li><router-link :to="{ name: 'signup' }">Signup</router-link></li>
