@@ -5,10 +5,28 @@
         <a href="" class="brand-logo left">GeoNinjas!</a>
 
         <ul class="right">
-          <li><a href="">Signup</a></li>
-          <li><a href="">Login</a></li>
+          <li><router-link :to="{ name: 'signup' }">Signup</router-link></li>
+          <li><router-link :to="{ name: 'login' }">Login</router-link></li>
+          <li><a href="" @click.prevent="logout">Logout</a></li>
         </ul>
       </div>
     </nav>
   </div>
 </template>
+
+
+<script>
+import firebase from 'firebase'
+
+export default {
+  methods: {
+    logout () {
+      firebase.auth().signOut()
+        .then(() => {
+          this.$router.push({ name: 'login' })
+        })
+        .catch(console.error)
+    }
+  }
+}
+</script>
