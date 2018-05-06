@@ -68,6 +68,23 @@ export default {
         minZoom: 3,
         streetViewControl: false,
       })
+
+      db.collection('users').get()
+        .then(users => {
+          users.forEach(user => {
+            const data = user.data()
+            if (!data.geolocation) {
+              return
+            }
+            const marker = new google.maps.Marker({
+              position: {
+                lat: data.geolocation.lat,
+                lng: data.geolocation.lng,
+              },
+              map,
+            })
+          })
+        })
     }
   }
 }
