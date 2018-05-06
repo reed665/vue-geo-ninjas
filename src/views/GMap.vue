@@ -7,6 +7,7 @@
 
 <script>
 import firebase from 'firebase'
+import db from '@/firestore'
 
 const oneHour = 60 * 60 * 1000
 
@@ -24,9 +25,11 @@ export default {
   mounted () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
-        this.lat = pos.coords.latitude
-        this.lng = pos.coords.longitude
-        this.renderMap()
+        this.updateUserCoords(pos)
+          .then(() => {
+            this.renderMap()
+          })
+          .catch(console.error)
       }, err => {
         console.error(err)
         this.renderMap()
@@ -39,6 +42,23 @@ export default {
     }
   },
   methods: {
+    updateUserCoords (pos) {
+      this.lat = pos.coords.latitude
+      this.lng = pos.coords.longitude
+      return db.collection('users').where('userId', '==', this.authUser.uid).get()
+        .then(snapshot => {
+          let userSlugId = null
+          snapshot.forEach(user => {
+            userSlugId = user.id
+          })
+          return db.collection('users').doc(userSlugId).update({
+            geolocation: {
+              lat: this.lat,
+              lng: this.lng,
+            }
+          })
+        })
+    },
     renderMap () {
       const mapEl = document.getElementById('map')
       const map = new google.maps.Map(mapEl, {
