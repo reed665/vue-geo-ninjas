@@ -8,20 +8,35 @@
 <script>
 import firebase from 'firebase'
 
+const oneHour = 60 * 60 * 1000
+
 export default {
   data () {
     return {
       lat: 53,
       lng: -2,
-      user: null,
+      authUser: null,
     }
   },
   created () {
-    this.user = firebase.auth().currentUser
+    this.authUser = firebase.auth().currentUser
   },
   mounted () {
-    this.renderMap()
-    console.log('>> current user', this.user)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.lat = pos.coords.latitude
+        this.lng = pos.coords.longitude
+        this.renderMap()
+      }, err => {
+        console.error(err)
+        this.renderMap()
+      }, {
+        maximumAge: oneHour,
+        timeout: 3000,
+      })
+    } else {
+      this.renderMap()
+    }
   },
   methods: {
     renderMap () {
