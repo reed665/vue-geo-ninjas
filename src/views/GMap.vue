@@ -83,6 +83,9 @@ export default {
               },
               map,
             })
+            marker.addListener('click', () => {
+              console.log(user.id)
+            })
           })
         })
     }
