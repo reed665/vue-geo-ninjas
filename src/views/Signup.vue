@@ -29,9 +29,10 @@
 
 
 <script>
+import firebase from 'firebase'
+import functions from 'firebase/functions'
 import slugify from 'slugify'
 import db from '@/firestore'
-import firebase from 'firebase' 
 
 export default {
   data () {
@@ -59,9 +60,11 @@ export default {
       }
       this.feedback = ''
       const userRef = db.collection('users').doc(this.slug)
-      userRef.get()
-        .then(doc => {
-          if (doc.exists) {
+      const checkAlias = firebase.functions().httpsCallable('checkAlias')
+      checkAlias({ slug: this.slug })
+        .then(({ data }) => {
+          const { unique } = data
+          if (!unique) {
             return Promise.reject(new Error('This alias already exists'))
           }
           return firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
