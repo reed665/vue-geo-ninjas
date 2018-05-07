@@ -6,7 +6,7 @@
       <form v-if="currentUser" @submit.prevent="addComment">
         <div class="field">
           <label for="comment">Add a comment</label>
-          <input type="text" name="comment" v-model="newComment">
+          <input type="text" name="comment" v-model="newComment" autocomplete="off">
           <p v-if="feedback" class="red-text center">{{ feedback }}</p>
         </div>
       </form>
