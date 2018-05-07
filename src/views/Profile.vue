@@ -93,7 +93,7 @@ export default {
       const newCommentObj = {
         content: this.newComment,
         date: Date.now(),
-        from: this.currentUser.id,
+        from: this.currentUser.alias,
         to: this.userSlug,
       }
       this.commentsRef.add(newCommentObj)
