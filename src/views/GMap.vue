@@ -81,10 +81,11 @@ export default {
                 lat: data.geolocation.lat,
                 lng: data.geolocation.lng,
               },
+              title: data.alias,
               map,
             })
             marker.addListener('click', () => {
-              console.log(user.id)
+              this.$router.push({ name: 'profile', params: { userSlug: user.id } })
             })
           })
         })
