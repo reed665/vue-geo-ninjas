@@ -50,6 +50,9 @@ export default {
         remove: /[$*_+~.()'"!\-:@]/g,
         lower: true,
       })
+    },
+    checkAlias () {
+      return firebase.functions().httpsCallable('checkAlias')
     }
   },
   methods: {
@@ -60,8 +63,7 @@ export default {
       }
       this.feedback = ''
       const userRef = db.collection('users').doc(this.slug)
-      const checkAlias = firebase.functions().httpsCallable('checkAlias')
-      checkAlias({ slug: this.slug })
+      this.checkAlias({ slug: this.slug })
         .then(({ data }) => {
           const { unique } = data
           if (!unique) {
