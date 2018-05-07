@@ -5,6 +5,7 @@ module.exports = {
     '@vue/airbnb'
   ],
   'rules': {
-    'semi': 0
+    'semi': 0,
+    'arrow-body-style': 0
   }
 }
