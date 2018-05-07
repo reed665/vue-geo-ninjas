@@ -11,9 +11,9 @@
         </div>
       </form>
 
-      <ul v-if="comments.length" class="comments">
-        <li v-for="(comment, idx) of comments" :key="idx">
-          <div class="pink-text">{{ comment.from }}</div>
+      <ul v-if="comments.length" class="collection comments">
+        <li class="collection-item" v-for="(comment, idx) of comments" :key="idx">
+          <div class="deep-purple-text">{{ comment.from }}</div>
           <div class="grey-text text-darken-2">{{ comment.content }}</div>
         </li>
       </ul>
