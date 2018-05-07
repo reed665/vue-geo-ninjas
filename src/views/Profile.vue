@@ -48,12 +48,15 @@ export default {
   },
   created () {
     this.setCurrentUser()
-    this.usersRef.doc(this.userSlug).get()
-      .then(userDoc => {
-        this.profile = userDoc.data()
-      })
+    this.setProfile()
   },
   methods: {
+    setProfile () {
+      return this.usersRef.doc(this.userSlug).get()
+        .then(userDoc => {
+          this.profile = userDoc.data()
+        })
+    },
     setCurrentUser () {
       return this.usersRef.where('userId', '==', this.authUser.uid).get()
         .then(snapshot => {
