@@ -5,7 +5,7 @@ admin.initializeApp()
 
 const users = admin.firestore().collection('users')
 
-exports.checkAlias = functions.https.onCall((data, context) => {
+exports.checkAlias = functions.https.onCall((data) => {
   return users.doc(data.slug).get()
     .then((doc) => {
       return { unique: !doc.exists }
