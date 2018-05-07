@@ -97,10 +97,8 @@ export default {
         to: this.userSlug,
       }
       this.commentsRef.add(newCommentObj)
-        .then(() => {
-          this.newComment = ''
-        })
         .catch(console.error)
+      this.newComment = ''
     }
   }
 }
