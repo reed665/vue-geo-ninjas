@@ -3,10 +3,6 @@
     <div class="card-panel">
       <h2 class="deep-purple-text center">{{ profile.alias }}'s profile</h2>
 
-      <ul class="comments collection">
-        <li>Comment</li>
-      </ul>
-
       <form v-if="currentUser" @submit.prevent="addComment">
         <div class="field">
           <label for="comment">Add a comment</label>
@@ -14,6 +10,13 @@
           <p v-if="feedback" class="red-text center">{{ feedback }}</p>
         </div>
       </form>
+
+      <ul v-if="comments.length" class="comments">
+        <li v-for="(comment, idx) of comments" :key="idx">
+          <div class="pink-text">{{ comment.from }}</div>
+          <div class="grey-text text-darken-2">{{ comment.content }}</div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -30,6 +33,7 @@ export default {
       newComment: '',
       feedback: '',
       currentUser: null,
+      comments: [],
     }
   },
   computed: {
@@ -49,8 +53,23 @@ export default {
   created () {
     this.setCurrentUser()
     this.setProfile()
+    this.setComments()
   },
   methods: {
+    setComments () {
+      return this.commentsRef.where('to', '==', this.userSlug)
+        .onSnapshot(snapshot => {
+          snapshot.docChanges.forEach(change => {
+            if (change.type !== 'added') {
+              return
+            }
+            const data = change.doc.data()
+            const { from, content, date } = data
+            const comment = { from, content, date }
+            this.comments.unshift(comment)
+          })
+        })
+    },
     setProfile () {
       return this.usersRef.doc(this.userSlug).get()
         .then(userDoc => {
