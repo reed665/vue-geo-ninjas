@@ -13,3 +13,10 @@ export default {
   components: { Navbar },  
 }
 </script>
+
+
+<style>
+body {
+  background: #ddd;
+}
+</style>
